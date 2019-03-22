@@ -9,3 +9,5 @@ geometry_msgs/Point[] landmarks_3d
 geometry_msgs/Point[] landmarks_2d
 
 openface2_ros/ActionUnit[] action_units
+
+std_msgs/Float32 confidence

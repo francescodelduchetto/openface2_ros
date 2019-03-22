@@ -30,6 +30,8 @@
 
 #include <sensor_msgs/Image.h>
 
+#include <std_msgs/Float32.h>
+
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
@@ -480,6 +482,10 @@ namespace openface2_ros
                     if(p.x > max.x) max.x = p.x;
                     if(p.y > max.y) max.y = p.y;
                   }
+
+                  std_msgs::Float32 confidence;
+                  confidence.data = face_models[model].detection_certainty;
+                  face.confidence = confidence;
 
                   if(publish_viz_ || visualize_viz_)
                   {
