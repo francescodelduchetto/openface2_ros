@@ -31,11 +31,14 @@ class FaceDetectionsIn3DPose():
 
             pose = Pose()
             pose.position = face.head_pose.position
+            pose.position.x /= 1000.
+            pose.position.y /= 1000.
+            pose.position.z /= 1000.
             pose.orientation = face.head_pose.orientation
 
             pose_array.poses.append(pose)
 
-        self.publish_poses(pose_array)
+        self.poseArray_pub.publish(pose_array)
 
 
 if __name__ == '__main__':
