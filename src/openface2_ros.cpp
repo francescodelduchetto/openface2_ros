@@ -326,6 +326,7 @@ namespace openface2_ros
         // Go through every model and detect eye gaze, record results and visualise the results
         for (size_t model = 0; model < face_models.size(); ++model)
         {
+
             // Visualising and recording the results
             if (active_models[model])
             {
@@ -482,6 +483,18 @@ namespace openface2_ros
                     if(p.x > max.x) max.x = p.x;
                     if(p.y > max.y) max.y = p.y;
                   }
+                  Rect roi_rec(min.x, min.y, max.x - min.x, max.y - min.y);
+                  if (0 > roi_rec.x)
+                    roi_rec.x = 0;
+                  if (roi_rec.x + roi_rec.width > cv_ptr_rgb->image.cols)
+                    roi_rec.width = cv_ptr_rgb->image.cols - roi_rec.x;
+                  if (0 > roi_rec.y)
+                    roi_rec.y = 0;
+                  if (roi_rec.y + roi_rec.height > cv_ptr_rgb->image.rows)
+                    roi_rec.height = cv_ptr_rgb->image.rows - roi_rec.y;
+
+                  cv::Mat roi = cv_ptr_rgb->image(roi_rec);
+                  face.roi = *cv_bridge::CvImage(img->header, "bgr8", roi).toImageMsg();
 
                   std_msgs::Float32 confidence;
                   confidence.data = face_models[model].detection_certainty;
